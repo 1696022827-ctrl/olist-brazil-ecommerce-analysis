@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# Secrets — NEVER commit
+.env
+.env.local
+
+# Large raw data (downloadable from Kaggle)
+/data/
+archive/
+notebook/
+
+# Large processed output (regeneratable)
+output/csv/
+
+# OS
+Thumbs.db
+.DS_Store
+~$*
+
+# Personal interview/resume files (not portfolio)
+文涛-*.docx
+文涛-*.pdf
+面试问答准备.md
+面试问答准备.pdf
+scripts/简历项目经历.txt
+scripts/面试项目总结.md
+scripts/面试项目总结.pdf
+scripts/面试问答稿.md

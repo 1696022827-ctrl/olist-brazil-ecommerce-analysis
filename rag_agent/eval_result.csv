@@ -1,0 +1,19 @@
+﻿idx,question,keywords,expected_source,retrieved_sources,retrieval_hit,answer_correct,elapsed_s,answer
+1,入职满4年的员工每年有多少天年假？,10,hr_leave_policy.md,hr_leave_policy.md|it_remote_work.md|hr_probation.md|it_data_security.md,Y,Y,4.48,入职满 4 年的员工每年有 10 天年假。   来源：hr_leave_policy.md
+2,入职满6年有多少天年假？,15,hr_leave_policy.md,hr_leave_policy.md|it_remote_work.md|hr_probation.md|hr_reimbursement.md,Y,Y,0.91,入职满6年有15天年假。   来源：hr_leave_policy.md
+3,报销金额超过2000元需要额外经过谁审批？,部门总监,hr_reimbursement.md,hr_reimbursement.md|it_remote_work.md|product_api_rate_limit.md|hr_leave_policy.md,Y,Y,1.32,- 单笔金额超过 2000 元（含）的，需额外经部门总监审批。   来源：hr_reimbursement.md
+4,员工报销的当月截止日是几号？,25,hr_reimbursement.md,hr_reimbursement.md|it_remote_work.md|it_data_security.md|hr_probation.md,Y,Y,0.99,每月 25 日为当月报销截止日。   来源：hr_reimbursement.md
+5,新员工试用期是几个月？,3,hr_probation.md,hr_probation.md|it_remote_work.md|hr_leave_policy.md|support_sla.md,Y,Y,1.11,新员工试用期统一为 3 个月。   来源：hr_probation.md
+6,最短试用期不能少于多久？,1个月,hr_probation.md,hr_probation.md|it_remote_work.md|hr_leave_policy.md|support_sla.md,Y,Y,1.07,最短试用期不得少于 1 个月。   来源：hr_probation.md
+7,数据看板Pro支持多少种图表类型？,14,product_dashboard.md,product_dashboard.md|support_sla.md|product_api_rate_limit.md|infra_regions.md,Y,Y,1.53,数据看板 Pro 支持 14 种图表类型，包括柱状图、折线图、饼图、漏斗图、地图热力图等。   来源：product_dashboard.md
+8,数据看板Pro数据刷新频率最快是多少？,5分钟,product_dashboard.md,product_dashboard.md|product_release.md|support_sla.md|product_api_rate_limit.md,Y,Y,0.97,数据看板Pro数据刷新频率最快是5分钟一次。   来源：product_dashboard.md
+9,OpenAPI免费版每天调用上限是多少次？,100,product_api_rate_limit.md,product_api_rate_limit.md|support_sla.md|it_remote_work.md|product_release.md,Y,Y,1.18,- 免费版每日调用上限为 100 次/天。   来源：product_api_rate_limit.md
+10,API调用超限后返回什么HTTP状态码？,429,product_api_rate_limit.md,product_api_rate_limit.md|support_sla.md|product_release.md|infra_regions.md,Y,Y,1.01,API调用超限后返回 HTTP 429 状态码。   来源：product_api_rate_limit.md
+11,版本发布的灰度放量比例依次是多少？,5%|20%|100%,product_release.md,product_release.md|product_api_rate_limit.md|product_dashboard.md|infra_regions.md,Y,Y,1.76,- 先放量 5% 观察 2 小时   - 再扩至 20% 观察 4 小时   - 无异常后全量 100%    来源：product_release.md
+12,员工每周最多可以远程办公几天？,2,it_remote_work.md,it_remote_work.md|hr_leave_policy.md|support_sla.md|it_data_security.md,Y,Y,1.09,- 每位员工每周最多可申请 2 天远程办公。   来源：it_remote_work.md
+13,远程办公需要提前多久申请？,1天,it_remote_work.md,it_remote_work.md|hr_leave_policy.md|hr_reimbursement.md|support_sla.md,Y,Y,1.17,- 需提前至少 1 天在 OA 系统提交申请，经主管同意。   来源：it_remote_work.md
+14,客户手机号在展示时如何脱敏？,前3|后4,it_data_security.md,it_data_security.md|support_sla.md|product_release.md|product_dashboard.md,Y,Y,1.18,客户手机号在展示时需保留前3位和后4位，中间用*替代。   来源：it_data_security.md
+15,公司核心服务部署在哪几个城市？,北京|上海|深圳,infra_regions.md,infra_regions.md|support_sla.md|product_dashboard.md|it_remote_work.md,Y,Y,0.95,- 北京   - 上海   - 深圳    来源：infra_regions.md
+16,深圳灾备中心的RPO不超过多少？,5分钟,infra_regions.md,infra_regions.md|product_api_rate_limit.md|it_remote_work.md|hr_reimbursement.md,Y,Y,1.01,深圳区域：异地灾备中心，RPO ≤ 5 分钟。   来源：infra_regions.md
+17,P0级故障承诺多久内响应？,15分钟,support_sla.md,support_sla.md|product_release.md|infra_regions.md|hr_leave_policy.md,Y,Y,1.17,- P0级故障（核心功能不可用）承诺15分钟内响应。   来源：support_sla.md
+18,今天天气怎么样？,没有找到,-,product_release.md|support_sla.md|hr_leave_policy.md|infra_regions.md,Y,Y,0.82,根据现有知识库，暂时没有找到相关信息。   来源：无

@@ -1,0 +1,128 @@
+/*
+============================================================
+  Olist 巴西电商数据分析 —— PowerBI DAX 度量值大全
+============================================================
+使用方法：
+1. 打开 PowerBI Desktop → 获取数据 → 选择 output/csv/ 下的 4 个 CSV：
+   - clean_wide.csv      （明细宽表，核心）
+   - rfm_result.csv      （RFM 用户分层）
+   - category_sales_stats.csv   （品类销售统计）
+   - category_review_stats.csv  （品类评价统计）
+2. 在 "模型" 视图里建立表关系：
+   - clean_wide[customer_unique_id]  ←→  rfm_result[customer_unique_id]  (关系 = 双向，基数 = 多对一)
+3. 点 "建模" → "新建度量值" → 把下面代码逐条复制进去
+4. 所有度量值默认基于 clean_wide 表（订单级别），一个订单可能多行（多商品），
+   涉及 "订单数" 的地方必须用 DISTINCTCOUNT(order_id)
+============================================================
+*/
+
+
+// ====================== 【核心 KPI 卡片】 ======================
+
+总订单数 = 
+    DISTINCTCOUNT(clean_wide[order_id])
+
+总GMV = 
+    SUM(clean_wide[订单总金额])
+
+客单价 = 
+    DIVIDE([总GMV], [总订单数], 0)
+
+总用户数 = 
+    DISTINCTCOUNT(clean_wide[customer_unique_id])
+
+平均配送天数 = 
+    // 订单粒度：先按订单取一次配送天数，再求平均（一单多件不重复加权）
+    AVERAGEX(VALUES(clean_wide[order_id]), 
+             CALCULATE(MAX(clean_wide[实际配送天数])))
+
+延迟订单数 = 
+    CALCULATE(DISTINCTCOUNT(clean_wide[order_id]), 
+              clean_wide[是否延迟] = "是")
+
+延迟率 = 
+    DIVIDE([延迟订单数], [总订单数], 0)
+
+
+// ====================== 【销售时间趋势】 ======================
+// 需要先建一个日期表（推荐），或者直接用 PowerBI 自动时间智能
+
+// 月均GMV
+月均GMV = 
+    DIVIDE([总GMV], DISTINCTCOUNT(clean_wide[下单月份]), 0)
+
+// 同比增长（如果有日期表可以做 SAMEPERIODLASTYEAR）
+// 简单版：本月 vs 上月增长率（需要配合日期表）
+
+
+// ====================== 【RFM 用户分层分析】 ======================
+
+RFM总用户数 = 
+    DISTINCTCOUNT(rfm_result[customer_unique_id])
+
+// 在 rfm_result 表上建，自动按客户分层切片
+RFM分层占比 = 
+    DIVIDE(
+        DISTINCTCOUNT(rfm_result[customer_unique_id]),
+        CALCULATE(DISTINCTCOUNT(rfm_result[customer_unique_id]), ALL(rfm_result[客户分层])),
+        0
+    )
+
+
+// ====================== 【商品类目分析】 ======================
+
+// TOP10 类目销售额（用于条形图）
+TOP10类目销售 = 
+    CALCULATETABLE(
+        TOPN(10, 
+             category_sales_stats, 
+             category_sales_stats[销售总额], DESC
+        ),
+        ALL(category_sales_stats[category_cn])
+    )
+
+// 类目延迟率（直接用 category_sales_stats.csv 的延迟率字段即可，无需 DAX）
+
+
+// ====================== 【评价维度分析】 ======================
+// review_score 已经在 clean_wide 里了
+
+平均评分 = 
+    // 订单粒度：空评分自动忽略，结果与 Python/SQL 一致（4.16）
+    AVERAGEX(VALUES(clean_wide[order_id]), 
+             CALCULATE(MAX(clean_wide[review_score])))
+
+差评订单数 = 
+    CALCULATE(DISTINCTCOUNT(clean_wide[order_id]), 
+              clean_wide[review_score] IN {1, 2})
+
+差评率 = 
+    DIVIDE(
+        CALCULATE(DISTINCTCOUNT(clean_wide[order_id]), 
+                  clean_wide[review_score] IN {1, 2}),
+        CALCULATE(DISTINCTCOUNT(clean_wide[order_id]), 
+                  NOT ISBLANK(clean_wide[review_score])), 
+        0
+    )
+
+// 评分分段（1-5分分布）
+评分分段 = 
+    SWITCH(
+        TRUE(),
+        clean_wide[review_score] = 5, "5分好评",
+        clean_wide[review_score] >= 4, "4分",
+        clean_wide[review_score] >= 3, "3分中评",
+        clean_wide[review_score] >= 2, "2分差评",
+        clean_wide[review_score] >= 1, "1分差评",
+        BLANK()
+    )
+
+
+// ====================== 【地理维度】 ======================
+// clean_wide 已带 customer_state 字段
+
+各州订单数 = 
+    CALCULATE(DISTINCTCOUNT(clean_wide[order_id]))
+
+各州GMV = 
+    SUM(clean_wide[订单总金额])
