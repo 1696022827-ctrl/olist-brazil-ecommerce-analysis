@@ -8,7 +8,10 @@ RAG 知识库问答 Agent —— Streamlit 界面
   - 侧栏：文档列表 / 上传新文档 / 重建索引 / 调节 Top-K 与相似度阈值 / 清空会话
 """
 import sys, os, time
-sys.stdout.reconfigure(encoding="utf-8")
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass  # Linux / Streamlit Cloud 上 stdout 不支持 reconfigure，跳过
 import streamlit as st
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
