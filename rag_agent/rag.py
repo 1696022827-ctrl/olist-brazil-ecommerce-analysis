@@ -18,6 +18,18 @@ from dotenv import load_dotenv
 
 load_dotenv()  # 读取同目录 .env（OPENAI_API_KEY / OPENAI_BASE_URL / OPENAI_MODEL）
 
+# 支持 Streamlit Cloud Secrets（云端无 .env 文件时从 st.secrets 读）
+try:
+    import streamlit as st
+    if hasattr(st, "secrets") and "OPENAI_API_KEY" in st.secrets:
+        os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+        os.environ["OPENAI_BASE_URL"] = st.secrets.get(
+            "OPENAI_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1"
+        )
+        os.environ["OPENAI_MODEL"] = st.secrets.get("OPENAI_MODEL", "qwen-plus")
+except Exception:
+    pass
+
 # dashscope SDK 读 DASHSCOPE_API_KEY；.env 里写的是 OPENAI_API_KEY（同一个百炼 key），映射过去
 os.environ.setdefault("DASHSCOPE_API_KEY", os.getenv("OPENAI_API_KEY", ""))
 
